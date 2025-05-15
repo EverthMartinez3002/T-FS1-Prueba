@@ -1,0 +1,49 @@
+version: '3.9'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: inventario-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: inventario
+      MYSQL_USER: Everth
+      MYSQL_PASSWORD: z5/K4p6KZL55
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - '3307:3306'
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: inventario-api
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./api:/var/www/html
+    depends_on:
+      - db
+    ports:
+      - '8001:8000'
+    env_file:
+      - ./api/.env
+
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    container_name: inventario-front
+    restart: unless-stopped
+    working_dir: /app
+    depends_on:
+      - api
+    ports:
+      - '3001:5173'
+    env_file:
+      - ./front/.env
+
+volumes:
+  db_data:
