@@ -76,9 +76,11 @@ import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from './stores/auth'
 import authService from './services/auth.service'
+import { useToast } from 'vue-toastification'
 
 const drawer = ref(false)
 const group  = ref(null)
+const toast = useToast()
 
 const route   = useRoute()
 const showNav = computed(() =>
@@ -91,7 +93,9 @@ const router = useRouter()
 async function onLogout() {
   try {
     await authService.logout()
+    toast.success('Sesión cerrada correctamente')
   } catch (e) {
+    toast.error('Error al cerrar sesión')
   }
   auth.clearToken()
   router.push({ name: 'login' })
