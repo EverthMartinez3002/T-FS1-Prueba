@@ -16,7 +16,17 @@ const login = async (user) => {
     return response;
 }
 
+const logout = async () => {
+    const response = await apiClient.post('/auth/logout');
+    if (response.data.success) {
+        setAuthToken(null);
+    }
+    return response;
+}
+
+
 export default {
     register,
-    login
+    login,
+    logout
 };
