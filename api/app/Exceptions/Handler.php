@@ -15,14 +15,12 @@ class Handler extends ExceptionHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        // Si es petición JSON o /api/* devolvemos JSON 401
         if ($request->expectsJson() || $request->is('api/*')) {
             return response()->json([
                 'message' => 'No autenticado',
             ], 401);
         }
 
-        // Si luego tienes login web, podrías redirigir:
         return redirect()->guest(route('login'));
     }
 }

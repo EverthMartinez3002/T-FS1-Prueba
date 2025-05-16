@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <!-- Header & New Button -->
     <v-row justify="space-between" class="mb-4">
       <v-col cols="auto">
         <h2 class="text-h5">Categorías</h2>
@@ -10,7 +9,6 @@
       </v-col>
     </v-row>
 
-    <!-- DataTable -->
     <v-data-table
       :headers="headers"
       :items="categorias"
@@ -22,7 +20,6 @@
       </template>
     </v-data-table>
 
-    <!-- Form Dialog -->
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <v-card-title>
@@ -57,7 +54,6 @@
       </v-card>
     </v-dialog>
 
-    <!-- Delete Confirmation -->
     <v-dialog v-model="deleteDialog" max-width="400px">
       <v-card>
         <v-card-title>Confirmar eliminación</v-card-title>
@@ -169,7 +165,7 @@ onMounted(fetchCategorias)
 
 <style scoped>
 .custom-header .v-data-table-header th {
-  background-color: #4f46e5; /* Indigo-600 */
+  background-color: #4f46e5;
   color: #fff;
 }
 </style>

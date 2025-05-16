@@ -123,7 +123,6 @@ const productos   = ref([])
 const proveedores = ref([])
 const categorias  = ref([])
 
-// Mapas rápidos para mostrar nombre
 const proveedoresMap = computed(() =>
   proveedores.value.reduce((m, p) => ((m[p.id] = p.nombre), m), {})
 )
@@ -131,7 +130,6 @@ const categoriasMap = computed(() =>
   categorias.value.reduce((m, c) => ((m[c.id] = c.nombre), m), {})
 )
 
-// Configuración de tabla
 const headers = [
   { title: 'ID',         key: 'id' },
   { title: 'Nombre',     key: 'nombre' },
@@ -142,7 +140,6 @@ const headers = [
   { title: 'Acciones',   key: 'actions', sortable: false },
 ]
 
-// Diálogos y formularios
 const dialog       = ref(false)
 const deleteDialog = ref(false)
 const formRef      = ref(null)
@@ -156,7 +153,6 @@ const form = reactive({
 })
 const toDelete = reactive({ id: null, nombre: '' })
 
-// Reglas de validación
 const requiredRules    = [v => !!v || 'Campo obligatorio']
 const nombreRules      = [...requiredRules, v => v.length >= 3 || 'Mínimo 3 caracteres']
 const descripcionRules = [v => !v || v.length >= 5 || 'Si hay descripción, mínimo 5 caracteres']

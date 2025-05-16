@@ -28,7 +28,6 @@ router.beforeEach(async (to, from) => {
     return { name: 'login' }
   }
 
-  // Si el usuario ya está logueado y trata de ir a login/register, lo mando a /categorias
   if ((to.name === 'login' || to.name === 'register') && auth.isAuthenticated) {
     return { name: 'categorias' }
   }

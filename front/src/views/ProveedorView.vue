@@ -1,6 +1,5 @@
 <template>
   <v-container fluid>
-    <!-- Encabezado + botón Nuevo -->
     <v-row align="center" justify="space-between" class="mb-4">
       <v-col><h2 class="text-h5">Proveedores</h2></v-col>
       <v-col cols="auto">
@@ -8,7 +7,6 @@
       </v-col>
     </v-row>
 
-    <!-- Tabla de proveedores -->
     <v-card>
       <v-data-table
         :headers="headers"
@@ -27,7 +25,6 @@
       </v-data-table>
     </v-card>
 
-    <!-- Modal Crear / Editar -->
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <v-card-title>
@@ -69,7 +66,6 @@
       </v-card>
     </v-dialog>
 
-    <!-- Modal Confirmar Borrado -->
     <v-dialog v-model="deleteDialog" max-width="400px">
       <v-card>
         <v-card-title>Confirmar eliminación</v-card-title>
@@ -118,7 +114,6 @@ const toDelete = reactive({
   nombre: '',
 })
 
-// Reglas de validación
 const nombreRules = [
   v => !!v || 'El nombre es obligatorio',
   v => v.length >= 3 || 'Mínimo 3 caracteres',

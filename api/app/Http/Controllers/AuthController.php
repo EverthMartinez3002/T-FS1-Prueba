@@ -30,7 +30,6 @@ class AuthController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        // Genera un token de acceso personal
         $token = $user->createToken('api_token')->plainTextToken;
 
         return response()->json([

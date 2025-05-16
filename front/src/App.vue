@@ -85,7 +85,6 @@ const showNav = computed(() =>
   !['home', 'login', 'register'].includes(route.name)
 )
 
-// Pinia store de auth
 const auth   = useAuthStore()
 const router = useRouter()
 
