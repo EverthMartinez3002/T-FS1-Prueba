@@ -34,7 +34,7 @@
                 v-model="form.password_confirmation"
                 label="Confirmar contraseña"
                 type="password"
-                :rules="[v => v === form.password || 'Las contraseñas no coinciden']"
+                :rules="passwordConfirmationRules"
                 required
                 prepend-inner-icon="mdi-lock-check"
               />
@@ -96,9 +96,18 @@ const passwordRules = [
   v => v.length >= 6 || 'Mínimo 6 caracteres',
 ]
 
+const passwordConfirmationRules = [
+  v => !!v || 'La confirmación de contraseña es obligatoria',
+  v => v === form.password || 'Las contraseñas no coinciden',
+]
+
 async function onSubmit() {
   const valid = await formRef.value.validate()
-  if (!valid) return
+  
+  if (!valid.valid) {
+    toast.error('Por favor, completa todos los campos correctamente.')
+    return
+  }
 
   loading.value = true
   try {
