@@ -23,8 +23,7 @@ import 'vue-toastification/dist/index.css'
 const toastOptions = {
   position: POSITION.TOP_RIGHT,
   timeout: 3000,
-  closeOnClick: true,
-  pauseOnHover: true
+  closeOnClick: true
 }
 
 const app = createApp(App);

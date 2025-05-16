@@ -54,11 +54,13 @@ import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import authService from '../services/auth.service'
+import { useLoaderStore } from '../stores/loader'
 
 const router = useRouter()
 const toast = useToast()
 const formRef = ref(null)
 const loading = ref(false)
+const loader = useLoaderStore()
 
 const form = reactive({
   email: '',
@@ -81,6 +83,7 @@ async function onSubmit() {
 
   loading.value = true
   try {
+    loader.show()
     const { data } = await authService.login(form)
     localStorage.setItem('token', data.token)
     toast.success('Inicio de sesión exitoso')
@@ -95,6 +98,7 @@ async function onSubmit() {
       toast.error('Error al iniciar sesión')
     }
   } finally {
+    loader.hide()
     loading.value = false
   }
 }

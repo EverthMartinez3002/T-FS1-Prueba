@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <Loader />
     <template v-if="showNav">
       <v-app-bar app color="primary" dark>
         <v-app-bar-nav-icon @click="drawer = !drawer" />
@@ -77,10 +78,13 @@ import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from './stores/auth'
 import authService from './services/auth.service'
 import { useToast } from 'vue-toastification'
+import Loader from './components/Loader.vue'
+import { useLoaderStore } from './stores/loader'
 
 const drawer = ref(false)
 const group  = ref(null)
 const toast = useToast()
+const loader = useLoaderStore()
 
 const route   = useRoute()
 const showNav = computed(() =>
@@ -92,10 +96,14 @@ const router = useRouter()
 
 async function onLogout() {
   try {
+    loader.show()
     await authService.logout()
     toast.success('Sesión cerrada correctamente')
   } catch (e) {
     toast.error('Error al cerrar sesión')
+  }
+  finally {
+    loader.hide()
   }
   auth.clearToken()
   router.push({ name: 'login' })

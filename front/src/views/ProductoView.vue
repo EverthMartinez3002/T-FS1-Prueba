@@ -115,8 +115,10 @@ import productoService from '../services/producto.service'
 import proveedorService from '../services/proveedor.service'
 import categoriaService from '../services/categoria.service'
 import { useToast } from 'vue-toastification'
+import { useLoaderStore } from '../stores/loader'
 
 const toast = useToast()
+const loader = useLoaderStore()
 
 // Datos
 const productos   = ref([])
@@ -159,6 +161,7 @@ const descripcionRules = [v => !v || v.length >= 5 || 'Si hay descripción, mín
 const precioRules      = [v => v !== null && v !== '' || 'El precio es obligatorio', v => v > 0 || 'Debe ser mayor a 0']
 
 async function fetchAll() {
+loader.show()
   const [p1, p2, p3] = await Promise.all([
     productoService.getAllProductos(),
     proveedorService.getAllProveedores(),
@@ -167,6 +170,7 @@ async function fetchAll() {
   productos.value   = p1.data
   proveedores.value = p2.data
   categorias.value  = p3.data
+loader.hide()
 }
 
 function openDialog(item = null) {
@@ -196,6 +200,7 @@ async function save() {
     return
   }
   try {
+    loader.show()
     if (form.id) {
       await productoService.updateProducto(form.id, form)
       toast.success('Producto actualizado')
@@ -208,6 +213,9 @@ async function save() {
   } catch {
     toast.error('Error al guardar producto')
   }
+    finally {
+        loader.hide()
+    }
 }
 
 function confirmDelete(item) {
@@ -218,12 +226,16 @@ function confirmDelete(item) {
 
 async function deleteItem() {
   try {
+    loader.show()
     await productoService.deleteProducto(toDelete.id)
     toast.success('Producto eliminado')
     deleteDialog.value = false
     await fetchAll()
   } catch {
     toast.error('Error al eliminar producto')
+  }
+  finally {
+    loader.hide()
   }
 }
 

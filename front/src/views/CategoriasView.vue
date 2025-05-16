@@ -74,6 +74,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useToast } from 'vue-toastification'
 import categoriaService from '../services/categoria.service'
+import { useLoaderStore } from '../stores/loader'
 
 const toast = useToast()
 const categorias = ref([])
@@ -91,6 +92,7 @@ const formRef = ref(null)
 const formValid = ref(false)
 const loading = ref(false)
 const form = reactive({ id: null, nombre: '', descripcion: '' })
+const loader = useLoaderStore()
 
 const rules = {
   required: v => !!v || 'Este campo es obligatorio',
@@ -98,10 +100,14 @@ const rules = {
 
 async function fetchCategorias() {
   try {
+    loader.show()
     const { data } = await categoriaService.getAllCategorias()
     categorias.value = data
   } catch {
     toast.error('Error cargando categorías')
+  }
+  finally {
+    loader.hide()
   }
 }
 
@@ -128,6 +134,7 @@ async function saveCategoria() {
   if (!valid) return
   loading.value = true
   try {
+    loader.show()
     if (form.id) {
       await categoriaService.updateCategoria(form.id, { nombre: form.nombre, descripcion: form.descripcion })
       toast.success('Categoría actualizada')
@@ -140,6 +147,7 @@ async function saveCategoria() {
   } catch {
     toast.error('Error al guardar categoría')
   } finally {
+    loader.hide()
     loading.value = false
   }
 }
@@ -151,12 +159,16 @@ function confirmDelete(item) {
 
 async function deleteCategoria(id) {
   try {
+    loader.show()
     await categoriaService.deleteCategoria(id)
     toast.success('Categoría eliminada')
     deleteDialog.value = false
     await fetchCategorias()
   } catch {
     toast.error('Error al eliminar categoría')
+  }
+  finally {
+    loader.hide()
   }
 }
 

@@ -59,9 +59,7 @@
             </RouterLink>
           </v-card-actions>
         </v-card>
-        <v-snackbar v-model="snack.show" :color="snack.color" timeout="3000">
-          {{ snack.message }}
-        </v-snackbar>
+        <!-- v-snackbar eliminado -->
       </v-col>
     </v-row>
   </v-container>
@@ -71,10 +69,14 @@
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import authService from '../services/auth.service'
+import { useLoaderStore } from '../stores/loader'
+import { useToast } from 'vue-toastification'
 
 const router = useRouter()
 const formRef = ref(null)
 const loading = ref(false)
+const loader = useLoaderStore()
+const toast = useToast()
 
 const form = reactive({
   name: '',
@@ -82,12 +84,6 @@ const form = reactive({
   password: '',
   password_confirmation: '',
   terms: false,
-})
-
-const snack = reactive({
-  show: false,
-  message: '',
-  color: '',
 })
 
 const emailRules = [
@@ -106,26 +102,20 @@ async function onSubmit() {
 
   loading.value = true
   try {
+    loader.show()
     const { data } = await authService.register(form)
     localStorage.setItem('token', data.token)
-    snack.message = 'Registro exitoso'
-    snack.color = 'success'
-    snack.show = true
+    toast.success('Registro exitoso')
     setTimeout(() => router.push('/login'), 800)
   } catch (e) {
     if (e.response?.status === 422) {
       Object.values(e.response.data.errors).flat()
-        .forEach(msg => {
-          snack.message = msg
-          snack.color = 'error'
-          snack.show = true
-        })
+        .forEach(msg => toast.error(msg))
     } else {
-      snack.message = 'Error en el registro'
-      snack.color = 'error'
-      snack.show = true
+      toast.error('Error en el registro')
     }
   } finally {
+    loader.hide()
     loading.value = false
   }
 }

@@ -84,6 +84,7 @@
 import { ref, reactive, onMounted, nextTick } from 'vue'
 import proveedorService from '../services/proveedor.service'
 import { useToast } from 'vue-toastification'
+import { useLoaderStore } from '../stores/loader'
 
 const toast = useToast()
 const proveedores = ref([])
@@ -100,6 +101,7 @@ const headers = [
 const dialog       = ref(false)
 const deleteDialog = ref(false)
 const formRef      = ref(null)
+const loader = useLoaderStore()
 
 const form = reactive({
   id: null,
@@ -133,8 +135,10 @@ const direccionRules = [
 ]
 
 async function fetchProveedores() {
+  loader.show()
   const { data } = await proveedorService.getAllProveedores()
   proveedores.value = data
+  loader.hide()
 }
 
 function openDialog(item = null) {
@@ -169,6 +173,7 @@ async function save() {
     return
   }
   try {
+    loader.show()
     if (form.id) {
       await proveedorService.updateProveedor(form.id, form)
       toast.success('Proveedor actualizado')
@@ -181,6 +186,9 @@ async function save() {
   } catch {
     toast.error('Error al guardar proveedor')
   }
+  finally {
+    loader.hide()
+  }
 }
 
 function confirmDelete(item) {
@@ -191,12 +199,16 @@ function confirmDelete(item) {
 
 async function deleteItem() {
   try {
+    loader.show()
     await proveedorService.deleteProveedor(toDelete.id)
     toast.success('Proveedor eliminado')
     deleteDialog.value = false
     await fetchProveedores()
   } catch {
     toast.error('Error al eliminar proveedor')
+  }
+  finally {
+    loader.hide()
   }
 }
 
