@@ -170,5 +170,4 @@ inventario-repuestos/
 │  └─ vite.config.ts, .env
 └─ docker-compose.yml
 ```
-
 ---
