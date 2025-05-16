@@ -84,7 +84,9 @@ async function onSubmit() {
     const { data } = await authService.login(form)
     localStorage.setItem('token', data.token)
     toast.success('Inicio de sesión exitoso')
-    router.push('/categorias') 
+    setTimeout(() => {
+      window.location.reload()
+    }, 2000)  
   } catch (e) {
     if (e.response?.status === 422) {
       const messages = Object.values(e.response.data.errors).flat()

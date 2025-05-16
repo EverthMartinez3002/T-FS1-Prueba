@@ -2,8 +2,8 @@ FROM php:8.2-fpm
 
 # Instalación de extensiones necesarias
 RUN apt-get update && apt-get install -y \
-    git zip unzip libzip-dev libpng-dev libonig-dev \
-  && docker-php-ext-install pdo_mysql mbstring zip
+    git zip unzip libzip-dev libpng-dev libonig-dev libsqlite3-dev \
+  && docker-php-ext-install pdo_mysql mbstring zip pdo_sqlite
 
 # Copiamos Composer desde la imagen oficial
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
