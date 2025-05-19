@@ -79,7 +79,10 @@ const passwordRules = [
 
 async function onSubmit() {
   const valid = await formRef.value.validate()
-  if (!valid) return
+  if (!valid.valid) {
+    toast.error('Por favor, completa todos los campos correctamente')
+    return
+  }
 
   loading.value = true
   try {

@@ -131,7 +131,10 @@ function closeForm() {
 
 async function saveCategoria() {
   const valid = await formRef.value.validate()
-  if (!valid) return
+  if (!valid.valid) {
+    toast.error('Por favor, completa todos los campos correctamente')
+    return
+  }
   loading.value = true
   try {
     loader.show()
