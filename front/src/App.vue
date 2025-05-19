@@ -85,7 +85,7 @@ const drawer = ref(false)
 const group  = ref(null)
 const toast = useToast()
 const loader = useLoaderStore()
-const isRouterReady = ref(false) // Nueva variable
+const isRouterReady = ref(false)
 
 const route   = useRoute()
 const showNav = computed(() =>
