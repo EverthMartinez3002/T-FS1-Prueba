@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <Loader />
-    <template v-if="showNav">
+    <template v-if="isRouterReady && showNav">
       <v-app-bar app color="primary" dark>
         <v-app-bar-nav-icon @click="drawer = !drawer" />
         <v-toolbar-title>Inventario de Repuestos</v-toolbar-title>
@@ -63,7 +63,7 @@
       padless
       color="primary"
       dark
-      v-if="showNav"
+      v-if="isRouterReady && showNav"
     >
       <v-col class="text-center" cols="12">
         © {{ new Date().getFullYear() }} Inventario de Repuestos
@@ -73,7 +73,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from './stores/auth'
 import authService from './services/auth.service'
@@ -85,6 +85,7 @@ const drawer = ref(false)
 const group  = ref(null)
 const toast = useToast()
 const loader = useLoaderStore()
+const isRouterReady = ref(false) // Nueva variable
 
 const route   = useRoute()
 const showNav = computed(() =>
@@ -93,6 +94,11 @@ const showNav = computed(() =>
 
 const auth   = useAuthStore()
 const router = useRouter()
+
+onMounted(async () => {
+  await router.isReady()
+  isRouterReady.value = true
+})
 
 async function onLogout() {
   try {
@@ -106,7 +112,7 @@ async function onLogout() {
     loader.hide()
   }
   auth.clearToken()
-  router.push({ name: 'login' })
+  router.push({ name: 'home' })
 }
 </script>
 
