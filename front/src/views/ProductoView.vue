@@ -195,8 +195,8 @@ function closeDialog() {
 
 async function save() {
   const valid = await formRef.value.validate()
-  if (!valid) {
-    toast.error('Corrige los errores antes de guardar.')
+  if (!valid.valid) {
+    toast.error('Por favor, completa todos los campos correctamente')
     return
   }
   try {
