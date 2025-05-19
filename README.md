@@ -14,7 +14,7 @@ Aplicación **Full-Stack** para la gestión de inventario de repuestos.
 
 ---
 
-## � Prerrequisitos
+## Prerrequisitos
 
 - Docker y Docker Compose (opcional)
 - PHP 8.2+ (extensiones: `pdo_mysql`, `pdo_sqlite` para tests)
@@ -149,7 +149,7 @@ Las rutas de la API están bajo `/api/v1`:
 
 ---
 
-## � Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 inventario-repuestos/
